@@ -13,14 +13,12 @@
 *.blend1.meta
 *.blob
 Logs/*
-.vscode/*
 .vs/*
 .vsconfig
 
 # Our custom ignores
 .DS_Store
 .idea/
-.vscode/
 .vs/
 UserSettings/
 Assets/Models/Otter/OtterUnity.dae

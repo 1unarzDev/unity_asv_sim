@@ -22,7 +22,7 @@ public class SITLCommsJsonOutputPacket {
     public float[] velocity = new float[] { 0.0f, 0.0f, 0.0f };
 }
 
-public class RoverComms : MonoBehaviour {
+public class MAVROSConnection : MonoBehaviour {
 
     public int localPort = 9002;
 
@@ -31,7 +31,7 @@ public class RoverComms : MonoBehaviour {
     Thread receiveThread;
 
     private bool hasRemoteConnection;
-    IPEndPoint remoteEndpoint = new IPEndPoint(IPAddress.Any, 0);
+    IPEndPoint remoteEndpoint = new(IPAddress.Any, 0);
 
     SITLCommsJsonOutputPacket data = new();
 
@@ -69,11 +69,11 @@ public class RoverComms : MonoBehaviour {
         // data.attitude = new float[] { transform.eulerAngles.x * Mathf.Deg2Rad, -transform.eulerAngles.z * Mathf.Deg2Rad, transform.eulerAngles.y * Mathf.Deg2Rad };
         // data.velocity = new float[] { -body.linearVelocity.x, body.linearVelocity.z, body.linearVelocity.y };
 
-        // data.imu.gyro = new float[] {0.0f, 0.0f, 0.0f};
-        // data.imu.accel_body = new float[] {0.0f, -9.8f, 0.0f};
-        // data.position = new float[] {0.0f, 0.0f, 0.0f};
-        // data.attitude = new float[] {0.0f, 0.0f, 0.0f};
-        // data.velocity = new float[] {0.0f, 0.0f, 0.0f};
+        data.imu.gyro = new float[] {0.0f, 0.0f, 0.0f};
+        data.imu.accel_body = new float[] {0.0f, -9.8f, 0.0f};
+        data.position = new float[] {0.0f, 0.0f, 0.0f};
+        data.attitude = new float[] {0.0f, 0.0f, 0.0f};
+        data.velocity = new float[] {0.0f, 0.0f, 0.0f};
     }
 
     private void ReceiveData() {
@@ -88,7 +88,7 @@ public class RoverComms : MonoBehaviour {
                     Debug.Log("Received new connection from SITL: " + remoteEndpoint.ToString());
                 }
                 else {
-                    //Debug.Log("Received data from SITL at addr " + remoteEndpoint.ToString());
+                    // Debug.Log("Received data from SITL at addr " + remoteEndpoint.ToString());
 
                     var reader = new BinaryReader(new MemoryStream(data), Encoding.UTF8, false);
 
@@ -103,7 +103,7 @@ public class RoverComms : MonoBehaviour {
                 }
             }
             catch (Exception err) {
-                Debug.LogException(err);
+                Debug.LogWarning(err);
             }
 
             // Send telemetry packet to remote endpoint
@@ -112,7 +112,6 @@ public class RoverComms : MonoBehaviour {
                 byte[] byteData = Encoding.UTF8.GetBytes(telemStr);
                 socketSend.Send(byteData, byteData.Length, remoteEndpoint);
             }
-
         }
     }
 }

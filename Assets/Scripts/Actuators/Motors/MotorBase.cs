@@ -132,7 +132,7 @@ namespace Sim.Actuators.Motors {
             targetAngle = Mathf.Clamp(targetAngle, minAngle, maxAngle);
             float currentAngle = GetAngle();
             float angleError = Mathf.DeltaAngle(currentAngle, targetAngle);
-            float desiredVelocity = pid.Run(angleError, Time.fixedDeltaTime);
+            float desiredVelocity = Mathf.Deg2Rad * pid.Run(angleError, Time.fixedDeltaTime);
             desiredVelocity = Mathf.Clamp(desiredVelocity, -maxAngularVelocity, maxAngularVelocity);
 
             ApplyVelocityControl(desiredVelocity);

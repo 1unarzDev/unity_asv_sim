@@ -104,9 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b545c2eb8688a341876de20411f6598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ClockMode: 0
-  m_LastSetClockMode: 0
-  m_PublishRateHz: 100
+  clockMode: 0
+  lastSetClockMode: 0
+  publishRateHz: 100
 --- !u!1 &2214722099867428006
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +116,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5138095631506805381}
+  - component: {fileID: 6070288483803586384}
+  - component: {fileID: 6284142259301688663}
   m_Layer: 0
   m_Name: RearLeftEngineJoint
   m_TagString: Untagged
@@ -139,6 +141,46 @@ Transform:
   - {fileID: 8403586258145844745}
   m_Father: {fileID: 366277461769902935}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &6070288483803586384
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2214722099867428006}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
+--- !u!114 &6284142259301688663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2214722099867428006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a225cc3ce3277d3c4af6f3b7e5c3a129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MotorsAssembly::Sim.Actuators.Motors.GenericMotor
+  config: {fileID: 11400000, guid: 5967f194d88ec50c2ab07a30fcc49b4f, type: 2}
 --- !u!1 &2634701924049440580
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2503313107540010791
 Transform:
   m_ObjectHideFlags: 0
@@ -409,6 +451,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4495604408979420719}
+  - component: {fileID: 6419248958106221995}
+  - component: {fileID: 4813950374034522079}
   m_Layer: 0
   m_Name: FrontLeftEngineJoint
   m_TagString: Untagged
@@ -432,6 +476,46 @@ Transform:
   - {fileID: 6037421868217926091}
   m_Father: {fileID: 366277461769902935}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &6419248958106221995
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4925392913000111281}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
+--- !u!114 &4813950374034522079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4925392913000111281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a225cc3ce3277d3c4af6f3b7e5c3a129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MotorsAssembly::Sim.Actuators.Motors.GenericMotor
+  config: {fileID: 11400000, guid: 5967f194d88ec50c2ab07a30fcc49b4f, type: 2}
 --- !u!1 &5239215981664146113
 GameObject:
   m_ObjectHideFlags: 0
@@ -900,6 +984,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005554527787146039}
+  - component: {fileID: 7875176102683843607}
+  - component: {fileID: 6257622206984066684}
   m_Layer: 0
   m_Name: FrontRightEngineJoint
   m_TagString: Untagged
@@ -923,6 +1009,46 @@ Transform:
   - {fileID: 2668521747976683748}
   m_Father: {fileID: 366277461769902935}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &7875176102683843607
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6487382693694650120}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
+--- !u!114 &6257622206984066684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6487382693694650120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a225cc3ce3277d3c4af6f3b7e5c3a129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MotorsAssembly::Sim.Actuators.Motors.GenericMotor
+  config: {fileID: 11400000, guid: 5967f194d88ec50c2ab07a30fcc49b4f, type: 2}
 --- !u!1 &6490864095461255724
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,6 +1394,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8974238591543745034}
+  - component: {fileID: 3480490145908641118}
+  - component: {fileID: 2197069247303850066}
   m_Layer: 0
   m_Name: RearRightEngineJoint
   m_TagString: Untagged
@@ -1291,6 +1419,46 @@ Transform:
   - {fileID: 878855129663911295}
   m_Father: {fileID: 366277461769902935}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &3480490145908641118
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7952322516605259358}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
+--- !u!114 &2197069247303850066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7952322516605259358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a225cc3ce3277d3c4af6f3b7e5c3a129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: MotorsAssembly::Sim.Actuators.Motors.GenericMotor
+  config: {fileID: 11400000, guid: 5967f194d88ec50c2ab07a30fcc49b4f, type: 2}
 --- !u!1 &8786718910907320599
 GameObject:
   m_ObjectHideFlags: 0
