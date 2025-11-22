@@ -67,7 +67,7 @@ namespace Sim.Physics.Processing {
         public void Update(Transform transform) {
             SetGridOrigin(transform);
 
-            WaterSimSearchData simData = new WaterSimSearchData();
+            WaterSimSearchData simData = new();
             if (!water.FillWaterSearchData(ref simData)) {
                 return;
             }
@@ -88,7 +88,7 @@ namespace Sim.Physics.Processing {
 
         /// Run once. Creates a new mesh representing the water patch grid based on parameters from submersion script.
         private Mesh ConstructWaterGridMesh() {
-            Mesh meshOut = new Mesh();
+            Mesh meshOut = new();
             //float vertexOffset = sideLength / gridFidelity;
             int rows = gridFidelity + 1;
             int columns = gridFidelity + 1;
@@ -133,7 +133,7 @@ namespace Sim.Physics.Processing {
         /// Searches for the water surface using the water simulation data.
         private void ExecuteWaterSimulationSearchJob(WaterSimSearchData simData, Vector3[] vertices) {
             // Prepare the first band
-            WaterSimulationSearchJob searchJob = new WaterSimulationSearchJob {
+            WaterSimulationSearchJob searchJob = new() {
                 // Assign the simulation data
                 simSearchData = simData,
                 // Fill the input data

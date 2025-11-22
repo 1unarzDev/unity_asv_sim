@@ -130,8 +130,8 @@ namespace Sim.Physics.Water.Dynamics {
             return D;
         }
         private (Vector3, Vector3) CalculateDampingForceTorque(float[] eta) {
-            Vector3 Fd = new Vector3(); // Damping force
-            Vector3 Td = new Vector3(); // Damping torque
+            Vector3 Fd = new(); // Damping force
+            Vector3 Td = new(); // Damping torque
 
             // Calculating linear damping force
             for (int i = 0; i < 3; i++) {
@@ -152,8 +152,8 @@ namespace Sim.Physics.Water.Dynamics {
 
 
         private (Vector3, Vector3) CalculateCoriolisForceTorque(float[,] C, float[] eta) {
-            Vector3 Fc = new Vector3();
-            Vector3 Tc = new Vector3();
+            Vector3 Fc = new();
+            Vector3 Tc = new();
 
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 6; j++) {
@@ -168,8 +168,8 @@ namespace Sim.Physics.Water.Dynamics {
         }
 
         private (Vector3, Vector3) CalculateAddedMassForceTorque(float[,] AddedMassMatrix, float[] etaDot) {
-            Vector3 F = new Vector3();
-            Vector3 T = new Vector3();
+            Vector3 F = new();
+            Vector3 T = new();
 
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 6; j++) {

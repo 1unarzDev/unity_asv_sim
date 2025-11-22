@@ -26,7 +26,7 @@ namespace Sim.Physics.Processing {
 
 
         private void Start() {
-            Vector3 gridOrigin = new Vector3(-patchSize / 2, 0, patchSize / 2);
+            Vector3 gridOrigin = new(-patchSize / 2, 0, patchSize / 2);
             patch = new Patch(waterSurface, patchSize, patchResolution, gridOrigin);
             submerged = new Submerged(simplifiedMesh, debug: true); // set up submersion by providing the simplified hull mesh
             patch.Update(transform); // updates the patch to follow the boat and queried water height

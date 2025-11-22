@@ -17,9 +17,9 @@ namespace Sim.Physics.Water.Statics {
 
         public bool logData;
 
-        private Plane plane = new Plane(Vector3.up, Vector3.zero);
-        private List<Vector3> globalVoxelPositions = new List<Vector3>();
-        private List<Vector3> pointsInsideMesh = new List<Vector3>();
+        private Plane plane = new(Vector3.up, Vector3.zero);
+        private List<Vector3> globalVoxelPositions = new();
+        private List<Vector3> pointsInsideMesh = new();
         private string path = "Assets/Data/";
         private Vector3 parentPosition;
 
@@ -74,7 +74,7 @@ namespace Sim.Physics.Water.Statics {
 
         /// Returns the list of points under the Plane.
         private List<Vector3> GetPointsUnderPlane() {
-            List<Vector3> pointsUnderPlane = new List<Vector3>();
+            List<Vector3> pointsUnderPlane = new();
 
             foreach (var point in globalVoxelPositions) {
                 if (!plane.GetSide(point)) pointsUnderPlane.Add(point);

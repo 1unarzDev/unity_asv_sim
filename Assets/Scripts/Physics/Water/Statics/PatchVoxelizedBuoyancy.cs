@@ -25,10 +25,10 @@ namespace Sim.Physics.Water.Statics {
         public WaterSurface targetSurface = null;
         public bool CutTheVoxels;
 
-        private List<Vector3> pointsInsideMesh = new List<Vector3>();
+        private List<Vector3> pointsInsideMesh = new();
         //private string pathToVoxelFile = "Assets/Data/localPointsData.json";
         private string path = "Assets/Data/Voxels/";
-        private List<Vector3> globalVoxelPositions = new List<Vector3>();
+        private List<Vector3> globalVoxelPositions = new();
         //private List<Vector3> relativePositions = new List<Vector3>();
         private Vector3 parentPosition;
 
@@ -64,7 +64,7 @@ namespace Sim.Physics.Water.Statics {
         private void Start() {
             if (patchSize == 0) return;
 
-            Vector3 gridOrigin = new Vector3(-patchSize / 2, 0, patchSize / 2);
+            Vector3 gridOrigin = new(-patchSize / 2, 0, patchSize / 2);
             patch = new Patch(targetSurface, patchSize, patchResolution, gridOrigin);
             patch.Update(transform);
 
@@ -104,8 +104,8 @@ namespace Sim.Physics.Water.Statics {
             int numberOfPoints = 0;
 
             //List<Vector3> pointsUnderPatch = new List<Vector3>();
-            List<Vector3> pointsFullySubmerged = new List<Vector3>();
-            List<Vector3> pointsAtSurface = new List<Vector3>();
+            List<Vector3> pointsFullySubmerged = new();
+            List<Vector3> pointsAtSurface = new();
             //List<Vector3> pointsAtSurfaceOverPatch = new List<Vector3>();
 
             foreach (var point in globalVoxelPositions) {
@@ -144,7 +144,7 @@ namespace Sim.Physics.Water.Statics {
             Vector3 sumOfPositions = Vector3.zero;
             int numberOfPoints = 0;
 
-            List<Vector3> pointsSubmerged = new List<Vector3>();
+            List<Vector3> pointsSubmerged = new();
 
             foreach (var point in globalVoxelPositions) {
                 float heightOfPoint = patch.GetPatchRelativeHeight(point);
@@ -213,9 +213,9 @@ namespace Sim.Physics.Water.Statics {
 
 
         public (List<Vector3>, List<Vector3>, List<Vector3>) DevelopPointLists() {
-            List<Vector3> pointsFullySubmerged = new List<Vector3>();
-            List<Vector3> pointsAtSurfaceUnderPatch = new List<Vector3>();
-            List<Vector3> pointsAtSurfaceOverPatch = new List<Vector3>();
+            List<Vector3> pointsFullySubmerged = new();
+            List<Vector3> pointsAtSurfaceUnderPatch = new();
+            List<Vector3> pointsAtSurfaceOverPatch = new();
 
             foreach (var point in globalVoxelPositions) {
                 float heightOfPoint = patch.GetPatchRelativeHeight(point);

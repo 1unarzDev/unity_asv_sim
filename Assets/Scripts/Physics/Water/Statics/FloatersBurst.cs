@@ -11,7 +11,7 @@ namespace Sim.Physics.Water.Statics {
         public WaterSurface waterSurface;
 
         // List of internal cubes
-        public List<GameObject> objects = new List<GameObject>();
+        public List<GameObject> objects = new();
         private int numObjects;
 
         // Input job parameters
@@ -49,7 +49,7 @@ namespace Sim.Physics.Water.Statics {
                 return;
             }
             // Try to get the simulation data if available
-            WaterSimSearchData simData = new WaterSimSearchData();
+            WaterSimSearchData simData = new();
             if (!waterSurface.FillWaterSearchData(ref simData))
                 return;
 
@@ -59,7 +59,7 @@ namespace Sim.Physics.Water.Statics {
                 targetPositionBuffer[i] = objects[i].transform.position;
 
             // Prepare the first band
-            WaterSimulationSearchJob searchJob = new WaterSimulationSearchJob();
+            WaterSimulationSearchJob searchJob = new();
 
             // Assign the simulation data
             searchJob.simSearchData = simData;
