@@ -10,7 +10,7 @@ namespace Sim.Sensors.Nav {
         [field: SerializeField] public string topicName { get; set; } = "odometry";
         [field: SerializeField] public string frameId { get; set; } = "odom";
         [field: SerializeField] public float Hz { get; set; } = 50.0f;
-        public ROSPublisher<OdometryMsg> publisher { get; set; }
+        public ROSPublisher<OdometryMsg> publisher { get; }
 
         private IPhysicsBody body;
 
@@ -55,7 +55,6 @@ namespace Sim.Sensors.Nav {
         }
 
         void Start() {
-            if (publisher == null) publisher = gameObject.AddComponent<ROSPublisher<OdometryMsg>>();
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
         }
     }

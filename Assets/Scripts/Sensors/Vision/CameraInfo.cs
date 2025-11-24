@@ -9,15 +9,12 @@ namespace Sim.Sensors.Vision {
         [field: SerializeField] public string topicName { get; set; } = "camera/camera_info";
         [field: SerializeField] public string frameId { get; set; } = "camera_link_optical_frame";
         [field: SerializeField] public float Hz { get; set; } = 5.0f;
-        public ROSPublisher<CameraInfoMsg> publisher { get; set; }
+        public ROSPublisher<CameraInfoMsg> publisher { get; }
 
         private Camera sensorCamera;
 
         private void Start() {
             sensorCamera = GetComponent<Camera>();
-            if (publisher == null)
-                publisher = gameObject.AddComponent<ROSPublisher<CameraInfoMsg>>();
-
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
         }
 

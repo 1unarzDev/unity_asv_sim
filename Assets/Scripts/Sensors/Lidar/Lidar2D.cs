@@ -17,15 +17,11 @@ namespace Sim.Sensors.Lidar {
         [field: SerializeField] public string topicName { get; set; } = "scan";
         [field: SerializeField] public string frameId { get; set; } = "lidar_link";
         [field: SerializeField] public float Hz { get; set; } = 5.0f;
-        public ROSPublisher<LaserScanMsg> publisher { get; set; }
+        public ROSPublisher<LaserScanMsg> publisher { get; }
 
         private Vector3[] scanDirVectors;
 
         private void Start() {
-            // Create publisher if it doesn't exist
-            if (publisher == null)
-                publisher = gameObject.AddComponent<ROSPublisher<LaserScanMsg>>();
-
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
 
             scanDirVectors = GenerateScanVectors();

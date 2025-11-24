@@ -1,7 +1,6 @@
 using UnityEngine;
 using Sim.Actuators.Motors;
 using UnityEngine.InputSystem;
-using Unity.VisualScripting;
 
 namespace Sim.Controllers {
     public class OmniXController : MonoBehaviour, IControllerBase {

@@ -9,16 +9,16 @@ namespace Sim.Sensors.Nav {
         [field: SerializeField] public string topicName { get; set; } = "imu/raw";
         [field: SerializeField] public string frameId { get; set; } = "imu_link";
         [field: SerializeField] public float Hz { get; set; } = 50.0f;
-        public ROSPublisher<ImuMsg> publisher { get; set; }
+        public ROSPublisher<ImuMsg> publisher { get; }
 
-        private IPhysicsBody body;
+        public IPhysicsBody body;
 
-        void OnValidate() {
+        private void OnValidate() {
             if (GetComponent<Rigidbody>() == null && GetComponent<ArticulationBody>() == null)
                 Debug.LogWarning($"{name} should have either a Rigidbody or an ArticulationBody attached.");
         }
 
-        void Awake() {
+        private void Awake() {
             var rb = GetComponent<Rigidbody>();
             var ab = GetComponent<ArticulationBody>();
 
@@ -35,8 +35,7 @@ namespace Sim.Sensors.Nav {
             };
         }
 
-        void Start() {
-            if (publisher == null) publisher = gameObject.AddComponent<ROSPublisher<ImuMsg>>();
+        private void Start() {
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
         }
     }

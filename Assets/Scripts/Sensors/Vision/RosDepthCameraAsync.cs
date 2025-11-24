@@ -16,7 +16,7 @@ namespace Sim.Sensors.Vision {
         [field: SerializeField] public string topicName { get; set; } = "camera/depth";
         [field: SerializeField] public string frameId { get; set; } = "camera_link_optical_frame";
         [field: SerializeField] public float Hz { get; set; } = 15.0f;
-        public ROSPublisher<ImageMsg> publisher { get; set; }
+        public ROSPublisher<ImageMsg> publisher { get; }
 
         private CustomPassVolume customPassVolume;
         private CameraDepthBake depthBakePass = new();
@@ -32,9 +32,6 @@ namespace Sim.Sensors.Vision {
             depthBakePass.bakingCamera = cam;
             depthBakePass.depthTexture = depthRenderTexture;
             customPassVolume.customPasses.Add(depthBakePass);
-
-            if (publisher == null)
-                publisher = gameObject.AddComponent<ROSPublisher<ImageMsg>>();
 
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
         }

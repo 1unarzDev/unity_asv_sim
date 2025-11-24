@@ -20,7 +20,7 @@ namespace Sim.Sensors.Lidar {
         [field: SerializeField] public string topicName { get; set; } = "points";
         [field: SerializeField] public string frameId { get; set; } = "lidar_link";
         [field: SerializeField] public float Hz { get; set; } = 10.0f;
-        public ROSPublisher<PointCloud2Msg> publisher { get; set; }
+        public ROSPublisher<PointCloud2Msg> publisher { get; }
 
         private Vector3[] scanDirVectors;
         private Transform transformCache;
@@ -30,9 +30,6 @@ namespace Sim.Sensors.Lidar {
         private float[] scanPatternParamsPrev;
 
         private void Start() {
-            if (publisher == null)
-                publisher = gameObject.AddComponent<ROSPublisher<PointCloud2Msg>>();
-
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
 
             scanDirVectors = GenerateScanVectors();

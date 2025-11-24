@@ -12,7 +12,7 @@ namespace Sim.Sensors.Vision {
         [field: SerializeField] public string topicName { get; set; } = "camera/image_raw";
         [field: SerializeField] public string frameId { get; set; } = "camera_link_optical_frame";
         [field: SerializeField] public float Hz { get; set; } = 15.0f;
-        public ROSPublisher<ImageMsg> publisher { get; set; }
+        public ROSPublisher<ImageMsg> publisher { get; }
 
         private Camera sensorCamera;
         private Texture2D rgbTexture2D;
@@ -21,9 +21,6 @@ namespace Sim.Sensors.Vision {
         private void Start() {
             sensorCamera = GetComponent<Camera>();
             sensorCamera.targetTexture = rgbRenderTexture;
-
-            if (publisher == null)
-                publisher = gameObject.AddComponent<ROSPublisher<ImageMsg>>();
 
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
         }

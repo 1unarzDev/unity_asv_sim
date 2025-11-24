@@ -10,7 +10,7 @@ namespace Sim.Sensors.Nav {
         [field: SerializeField] public string topicName { get; set; } = "gps/raw";
         [field: SerializeField] public string frameId { get; set; } = "gps_link";
         [field: SerializeField] public float Hz { get; set; } = 20.0f;
-        public ROSPublisher<NavSatFixMsg> publisher { get; set; }
+        public ROSPublisher<NavSatFixMsg> publisher { get; }
 
         public NavSatFixMsg CreateMessage() {
             return new NavSatFixMsg {
@@ -19,7 +19,6 @@ namespace Sim.Sensors.Nav {
         }
 
         void Start() {
-            if (publisher == null) publisher = gameObject.AddComponent<ROSPublisher<NavSatFixMsg>>();
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
         }
     }
