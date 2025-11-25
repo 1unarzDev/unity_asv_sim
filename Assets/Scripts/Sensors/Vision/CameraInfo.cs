@@ -6,12 +6,16 @@ using Unity.Robotics.ROSTCPConnector.MessageGeneration;
 namespace Sim.Sensors.Vision {
     [RequireComponent(typeof(Camera))]
     public class CameraInfo : MonoBehaviour, IROSSensor<CameraInfoMsg> {
-        [field: SerializeField] public string topicName { get; set; } = "camera/camera_info";
-        [field: SerializeField] public string frameId { get; set; } = "camera_link_optical_frame";
-        [field: SerializeField] public float Hz { get; set; } = 5.0f;
-        public ROSPublisher<CameraInfoMsg> publisher { get; }
+        [SerializeField] private string topicName = "camera/camera_info";
+        [SerializeField] private string frameId = "camera_link_optical_frame";
+        [SerializeField] private float Hz = 5.0f;
+        public ROSPublisher publisher { get; set; }
 
         private Camera sensorCamera;
+
+        private void Awake() {
+            publisher = gameObject.AddComponent<ROSPublisher>();
+        }
 
         private void Start() {
             sensorCamera = GetComponent<Camera>();
@@ -20,9 +24,9 @@ namespace Sim.Sensors.Vision {
 
         public CameraInfoMsg CreateMessage() {
             return CameraInfoGenerator.ConstructCameraInfoMessage(
-                sensorCamera, 
-                ROSPublisher<CameraInfoMsg>.CreateHeader(frameId), 
-                0f, 
+                sensorCamera,
+                publisher.CreateHeader(),
+                0f,
                 1.0f
             );
         }

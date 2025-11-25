@@ -4,15 +4,17 @@ using Unity.Robotics.ROSTCPConnector;
 
 namespace Sim.Utils.ROS {
     [Serializable]
-    public class ROSSubscriber<T> : MonoBehaviour where T : Unity.Robotics.ROSTCPConnector.MessageGeneration.Message {
+    public class ROSSubscriber : MonoBehaviour {
         public string topicName;
 
-        public void Initialize(string topicName, Action<T> callback) {
+        public void Initialize<T>(string topicName, Action<T> callback)
+        where T : Unity.Robotics.ROSTCPConnector.MessageGeneration.Message {
             this.topicName = topicName;
             ROSConnection.GetOrCreateInstance().Subscribe(topicName, callback);
         }
 
-        public void Initialize(Action<T> callback) {
+        public void Initialize<T>(Action<T> callback)
+        where T : Unity.Robotics.ROSTCPConnector.MessageGeneration.Message {
             if (topicName == null) { Debug.LogError("No topic name set"); return; }
             ROSConnection.GetOrCreateInstance().Subscribe(topicName, callback);
         }

@@ -5,6 +5,7 @@ using Sim.Physics.Water.Statics;
 using Sim.Utils;
 
 namespace Sim.Physics.Water.Dynamics {
+    [RequireComponent(typeof(Submersion))]
     public class KernerDynamics : MonoBehaviour {
 
         public bool viscousResistActive;
@@ -30,7 +31,6 @@ namespace Sim.Physics.Water.Dynamics {
         [Range(0.1f, 4.0f)]
         public float suctionDragFalloffPower = 1.0f;
 
-
         private Submerged submerged;
         private float[] submergedFaceAreas;
         private Buoyancy buoyancy;
@@ -38,16 +38,15 @@ namespace Sim.Physics.Water.Dynamics {
         private int[] submergedMeshTriangles;
         private Vector3[] submergedMeshVertices;
 
-
         public float hullZMin = -2.5f;
         public float hullZMax = 2.9f;
 
-        void OnValidate() {
+        private void OnValidate() {
             if (GetComponent<Rigidbody>() == null && GetComponent<ArticulationBody>() == null)
                 Debug.LogWarning($"{name} should have either a Rigidbody or an ArticulationBody attached.");
         }
 
-        void Awake() {
+        private void Awake() {
             var rb = GetComponent<Rigidbody>();
             var ab = GetComponent<ArticulationBody>();
 
@@ -56,9 +55,7 @@ namespace Sim.Physics.Water.Dynamics {
             else throw new MissingComponentException($"{name} requires a Rigidbody or ArticulationBody!");
         }
 
-        private void Start() {
-            submerged = GetComponent<Submersion>().submerged;
-        }
+        private void Start() { submerged = GetComponent<Submersion>().submerged; }
 
         private void FixedUpdate() {
             submergedMeshTriangles = submerged.data.triangles;
@@ -78,7 +75,6 @@ namespace Sim.Physics.Water.Dynamics {
                                   pressureDragFalloffPower,
                                   suctionDragFalloffPower);
             }
-
         }
 
         private void ApplyViscousResistance(float Cfr, float density = Constants.waterDensity) {
@@ -106,7 +102,7 @@ namespace Sim.Physics.Water.Dynamics {
                 }
             }
             if (debugResist) {
-                // Debug.DrawRay(transform.position, totalViscousForce/100, Color.red);
+                // Debug.DrawRay(transform.position, totalViscousForce / 100, Color.red);
             }
             return;
         }

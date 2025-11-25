@@ -44,6 +44,8 @@ namespace Sim.Physics.Processing {
         public float volume;
         public int maxTriangleIndex;
 
+        public bool[] isSubmerged;
+
         public Data(int maxNumTriangles) {
             vertices = new Vector3[maxNumTriangles];
             triangles = new int[maxNumTriangles];
@@ -54,6 +56,7 @@ namespace Sim.Physics.Processing {
             centroid = new Vector3();
             volume = new float();
             maxTriangleIndex = 0;
+            isSubmerged = new bool[maxNumTriangles];
         }
     }
 
@@ -121,7 +124,9 @@ namespace Sim.Physics.Processing {
                     float height = patch.GetPatchRelativeHeight(verticesWorld[j]);
                     vertexHeights[j] = height;
                     if (height < 0) submergedCount++; // depth > 0 == submerged point
+
                 }
+
                 Vector3 triangleNormal = (normalsLocal[0] + normalsLocal[1] + normalsLocal[2]).normalized;
 
                 // How many vertices are underwater?
@@ -167,6 +172,8 @@ namespace Sim.Physics.Processing {
                             break;
                         }
                     case 3: {
+                            data.isSubmerged[data.maxTriangleIndex / 3] = true;
+
                             AppendTriangle(data, verticesLocal[0], verticesLocal[1], verticesLocal[2], triangleNormal);
                             break;
                         }

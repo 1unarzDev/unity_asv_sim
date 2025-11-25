@@ -9,14 +9,18 @@ namespace Sim.Sensors.Vision {
     public class ROSCameraAsync : MonoBehaviour, IROSSensor<ImageMsg> {
         [SerializeField] private RenderTexture rgbRenderTexture;
 
-        [field: SerializeField] public string topicName { get; set; } = "camera/image_raw";
-        [field: SerializeField] public string frameId { get; set; } = "camera_link_optical_frame";
-        [field: SerializeField] public float Hz { get; set; } = 15.0f;
-        public ROSPublisher<ImageMsg> publisher { get; }
+        [SerializeField] private string topicName = "camera/image_raw";
+        [SerializeField] private string frameId = "camera_link_optical_frame";
+        [SerializeField] private float Hz = 15.0f;
+        public ROSPublisher publisher { get; set; }
 
         private Camera sensorCamera;
         private Texture2D rgbTexture2D;
         private float timeSincePublish = 0.0f;
+
+        private void Awake() {
+            publisher = gameObject.AddComponent<ROSPublisher>();
+        }
 
         private void Start() {
             sensorCamera = GetComponent<Camera>();
@@ -26,7 +30,7 @@ namespace Sim.Sensors.Vision {
         }
 
         public ImageMsg CreateMessage() {
-            return rgbTexture2D.ToImageMsg(ROSPublisher<ImageMsg>.CreateHeader(frameId));
+            return rgbTexture2D.ToImageMsg(publisher.CreateHeader());
         }
 
         private void FixedUpdate() {

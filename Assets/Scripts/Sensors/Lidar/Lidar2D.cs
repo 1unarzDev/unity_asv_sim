@@ -14,12 +14,16 @@ namespace Sim.Sensors.Lidar {
         [SerializeField] private int batchSize = 500;
         [SerializeField] private bool drawRays = false;
 
-        [field: SerializeField] public string topicName { get; set; } = "scan";
-        [field: SerializeField] public string frameId { get; set; } = "lidar_link";
-        [field: SerializeField] public float Hz { get; set; } = 5.0f;
-        public ROSPublisher<LaserScanMsg> publisher { get; }
+        [SerializeField] private string topicName = "scan";
+        [SerializeField] private string frameId = "lidar_link";
+        [SerializeField] private float Hz = 5.0f;
+        public ROSPublisher publisher { get; set; }
 
         private Vector3[] scanDirVectors;
+
+        private void Awake() {
+            publisher = gameObject.AddComponent<ROSPublisher>();
+        }
 
         private void Start() {
             publisher.Initialize(topicName, frameId, CreateMessage, Hz);
@@ -86,7 +90,7 @@ namespace Sim.Sensors.Lidar {
 
         private LaserScanMsg DistancesToLaserscan(float[] dists) {
             LaserScanMsg msg = new() {
-                header = ROSPublisher<LaserScanMsg>.CreateHeader(frameId),
+                header = publisher.CreateHeader(),
 
                 angle_min = minAngleDegrees * Mathf.Deg2Rad,
                 angle_max = maxAngleDegrees * Mathf.Deg2Rad,

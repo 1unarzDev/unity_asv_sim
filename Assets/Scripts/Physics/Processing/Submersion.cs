@@ -5,8 +5,7 @@ using Sim.Utils;
 
 namespace Sim.Physics.Processing {
     public class Submersion : MonoBehaviour {
-        [ReadOnly]
-        public Submerged submerged;
+        [ReadOnly] public Submerged submerged;
 
         [SerializeField, Tooltip("HDRP water surface used for height querying")]
         private WaterSurface waterSurface = null;
@@ -24,13 +23,11 @@ namespace Sim.Physics.Processing {
         [SerializeField] private bool drawSubmerged;
         private float displacedVolume;
 
-
-        private void Start() {
+        private void Awake() {
             Vector3 gridOrigin = new(-patchSize / 2, 0, patchSize / 2);
             patch = new Patch(waterSurface, patchSize, patchResolution, gridOrigin);
             submerged = new Submerged(simplifiedMesh, debug: true); // set up submersion by providing the simplified hull mesh
             patch.Update(transform); // updates the patch to follow the boat and queried water height
-
         }
 
         private void FixedUpdate() {

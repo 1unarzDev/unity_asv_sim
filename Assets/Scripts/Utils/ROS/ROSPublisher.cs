@@ -1,54 +1,73 @@
 using System;
+using System.Reflection;
 using UnityEngine;
 using Unity.Robotics.ROSTCPConnector;
 using RosMessageTypes.Std;
 
 namespace Sim.Utils.ROS {
-    [Serializable]
-    public class ROSPublisher<T> : MonoBehaviour where T : Unity.Robotics.ROSTCPConnector.MessageGeneration.Message {
-        public string topicName;
-        public string frameId;
-        public float Hz, timeSincePublish;
-        public ROSConnection ros;
-        private Func<T> CreateMessage;
+    [AddComponentMenu("")]
+    public class ROSPublisher : MonoBehaviour {
+        public string topicName { get; set; }
+        public string frameId { get; set; }
+        public float Hz;
 
-        public void Initialize(string topicName, string frameId, Func<T> CreateMessage, float Hz=10.0f) {
+        private ROSConnection ros;
+        private float time;
+
+        private Func<object> createMessage;
+        private Action<string, object> publishTyped;
+
+        private static void PublishWrapper<T>(ROSConnection ros, string topic, object msg)
+        where T : Unity.Robotics.ROSTCPConnector.MessageGeneration.Message {
+            ros.Publish(topic, (T)msg);
+        }
+
+        private void OnEnable() { hideFlags = HideFlags.HideInInspector; }
+
+        public void Initialize<T>(string topicName, string frameId, Func<T> createMessage, float Hz=10f)
+        where T : Unity.Robotics.ROSTCPConnector.MessageGeneration.Message {
             this.topicName = topicName;
             this.frameId = frameId;
             this.Hz = Hz;
-            this.CreateMessage = CreateMessage;
-        }
 
-        public void Initialize(Func<T> CreateMessage) {
-            if (topicName == null || frameId == null) { Debug.LogError("Topic name or frame ID not set");  return; }
-            if (Hz == 0.0f) Hz = 10.0f;
-            this.CreateMessage = CreateMessage;
-        }
-        
-        private void Start() {
             ros = ROSConnection.GetOrCreateInstance();
             ros.RegisterPublisher<T>(topicName);
-            timeSincePublish = 0.0f;
+
+            this.createMessage = () => createMessage();
+
+            var wrapperMethod = typeof(ROSPublisher)
+                .GetMethod(nameof(PublishWrapper), BindingFlags.Static | BindingFlags.NonPublic)
+                .MakeGenericMethod(typeof(T));
+
+            publishTyped = (Action<string, object>)
+                Delegate.CreateDelegate(
+                    typeof(Action<string, object>),
+                    ros,
+                    wrapperMethod
+                );
         }
 
         private void FixedUpdate() {
-            timeSincePublish += Time.fixedDeltaTime;
-            if (timeSincePublish < 1.0f / Hz) return;
-            ros.Publish(topicName, CreateMessage());
-            timeSincePublish = 0.0f;
+            if (createMessage == null) return;
+
+            time += Time.fixedDeltaTime;
+            if (time >= 1f / Hz) {
+                Publish();
+                time = 0f;
+            }
         }
 
-        public void Publish() { ros.Publish(topicName, CreateMessage()); }
+        public void Publish() {
+            publishTyped(topicName, createMessage());
+        }
 
-        public static HeaderMsg CreateHeader(string frameId) {
-            var header = new HeaderMsg { frame_id = frameId };
-
+        public HeaderMsg CreateHeader() {
+            var header = new HeaderMsg { frame_id=frameId };
             var publishTime = Clock.Now;
             var sec = publishTime;
             var nanosec = (publishTime - Math.Floor(publishTime)) * Clock.k_NanoSecondsInSeconds;
             header.stamp.sec = (int)sec;
             header.stamp.nanosec = (uint)nanosec;
-
             return header;
         }
     }

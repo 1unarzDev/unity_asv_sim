@@ -7,10 +7,10 @@ using Sim.Utils.ROS;
 
 namespace Sim.Sensors.Nav {
     public class Odom : MonoBehaviour, IROSSensor<OdometryMsg> {
-        [field: SerializeField] public string topicName { get; set; } = "odometry";
-        [field: SerializeField] public string frameId { get; set; } = "odom";
-        [field: SerializeField] public float Hz { get; set; } = 50.0f;
-        public ROSPublisher<OdometryMsg> publisher { get; }
+        [SerializeField] private string topicName = "odometry";
+        [SerializeField] private string frameId = "odom";
+        [SerializeField] private float Hz = 50.0f;
+        public ROSPublisher publisher { get; set; }
 
         private IPhysicsBody body;
 
@@ -26,6 +26,8 @@ namespace Sim.Sensors.Nav {
             if (rb != null) body = new RigidbodyAdapter(rb);
             else if (ab != null) body = new ArticulationBodyAdapter(ab);
             else throw new MissingComponentException($"{name} requires a Rigidbody or ArticulationBody!");
+
+            publisher = gameObject.AddComponent<ROSPublisher>();
         }
 
         public OdometryMsg CreateMessage() {
@@ -49,7 +51,7 @@ namespace Sim.Sensors.Nav {
             msg.twist.twist.angular.y = 0;
             msg.twist.twist.angular.z = -body.angularVelocity.y;
 
-            msg.header = ROSPublisher<OdometryMsg>.CreateHeader(frameId);
+            msg.header = publisher.CreateHeader();
 
             return msg;
         }

@@ -13,16 +13,20 @@ namespace Sim.Sensors.Vision {
 
         [SerializeField] private RenderTexture depthRenderTexture;
 
-        [field: SerializeField] public string topicName { get; set; } = "camera/depth";
-        [field: SerializeField] public string frameId { get; set; } = "camera_link_optical_frame";
-        [field: SerializeField] public float Hz { get; set; } = 15.0f;
-        public ROSPublisher<ImageMsg> publisher { get; }
+        [SerializeField] private string topicName = "camera/depth";
+        [SerializeField] private string frameId = "camera_link_optical_frame";
+        [SerializeField] private float Hz = 15.0f;
+        public ROSPublisher publisher { get; set; }
 
         private CustomPassVolume customPassVolume;
         private CameraDepthBake depthBakePass = new();
         private Camera cam;
         private Texture2D depthTex2D;
         private float timeSincePublish = 0.0f;
+
+        private void Awake() {
+            publisher = gameObject.AddComponent<ROSPublisher>();
+        }
 
         private void Start() {
             cam = GetComponent<Camera>();
@@ -37,7 +41,7 @@ namespace Sim.Sensors.Vision {
         }
 
         public ImageMsg CreateMessage() {
-            return GetDepthImageMsg(depthTex2D, ROSPublisher<ImageMsg>.CreateHeader(frameId));
+            return GetDepthImageMsg(depthTex2D, publisher.CreateHeader());
         }
 
         private void FixedUpdate() {

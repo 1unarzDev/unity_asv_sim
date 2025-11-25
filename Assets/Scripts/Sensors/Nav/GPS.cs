@@ -7,15 +7,19 @@ using Sim.Utils.ROS;
 
 namespace Sim.Sensors.Nav {
     public class GPS : MonoBehaviour, IROSSensor<NavSatFixMsg> {
-        [field: SerializeField] public string topicName { get; set; } = "gps/raw";
-        [field: SerializeField] public string frameId { get; set; } = "gps_link";
-        [field: SerializeField] public float Hz { get; set; } = 20.0f;
-        public ROSPublisher<NavSatFixMsg> publisher { get; }
+        [SerializeField] private string topicName = "gps/raw";
+        [SerializeField] private string frameId = "gps_link";
+        [SerializeField] private float Hz = 20.0f;
+        public ROSPublisher publisher { get; set; }
 
         public NavSatFixMsg CreateMessage() {
             return new NavSatFixMsg {
-                header = ROSPublisher<ImuMsg>.CreateHeader(frameId)
+                header = publisher.CreateHeader()
             };
+        }
+
+        private void Awake() {
+            publisher = gameObject.AddComponent<ROSPublisher>();
         }
 
         void Start() {

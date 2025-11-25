@@ -6,10 +6,10 @@ using Sim.Utils.ROS;
 
 namespace Sim.Sensors.Nav {
     public class Imu : MonoBehaviour, IROSSensor<ImuMsg> {
-        [field: SerializeField] public string topicName { get; set; } = "imu/raw";
-        [field: SerializeField] public string frameId { get; set; } = "imu_link";
-        [field: SerializeField] public float Hz { get; set; } = 50.0f;
-        public ROSPublisher<ImuMsg> publisher { get; }
+        [SerializeField] private string topicName = "imu/raw";
+        [SerializeField] private string frameId = "imu_link";
+        [SerializeField] private float Hz = 50.0f;
+        public ROSPublisher publisher { get; set; }
 
         public IPhysicsBody body;
 
@@ -25,13 +25,15 @@ namespace Sim.Sensors.Nav {
             if (rb != null) body = new RigidbodyAdapter(rb);
             else if (ab != null) body = new ArticulationBodyAdapter(ab);
             else throw new MissingComponentException($"{name} requires a Rigidbody or ArticulationBody!");
+
+            publisher = gameObject.AddComponent<ROSPublisher>();
         }
 
         public ImuMsg CreateMessage() {
             return new ImuMsg {
                 orientation = body.transform.rotation.To<FLU>(),
                 angular_velocity = body.angularVelocity.To<FLU>(),
-                header = ROSPublisher<ImuMsg>.CreateHeader(frameId)
+                header = publisher.CreateHeader()
             };
         }
 

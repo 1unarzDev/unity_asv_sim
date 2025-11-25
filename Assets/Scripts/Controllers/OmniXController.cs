@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 namespace Sim.Controllers {
     public class OmniXController : MonoBehaviour, IControllerBase {
         [SerializeField] private InputActionReference linearAction, angularAction;
-        [SerializeField, Tooltip("Length (front to rear) and width (left to right) between thrusters")] private float length, width;
         [SerializeField] private Thruster frontLeft, frontRight, rearLeft, rearRight;
         [SerializeField] private ThrusterConfig config; // Assumes all thrusters have this configuration
         private Vector2 linearInput;
@@ -52,18 +51,33 @@ namespace Sim.Controllers {
             angularInput = 0;
             Move();
         }
-        
+
         private void Move() {
-            SetMotion(new Vector3(linearInput.x, 0, linearInput.y), new Vector3(0, angularInput, 0));
+            SetMotion(new Vector3(linearInput.x, linearInput.y, 0), new Vector3(0, 0, angularInput));
         }
 
         // TODO: More accurately model desired linear and angular velocity (not just full forward throttle/backward/angular)
         public void SetMotion(Vector3 linear, Vector3 angular) {
-            if (linear.y == 1) {
-                frontLeft.SetCommand(config.GetMinCommand());
-                frontRight.SetCommand(config.GetMinCommand());
-                rearLeft.SetCommand(config.GetMaxCommand());
-                rearRight.SetCommand(config.GetMaxCommand());
+            // Debug.Log(linear.x + " " + linear.y + " " + angular.z);
+            if (angular.z != 0) {
+                // Only as good at generating torque as the magnitude of the cross product of the radius and force vectors
+                float frd = angular.z * config.GetMaxCommand();
+                float fld = -frd;
+
+                frontLeft.SetCommand(fld);
+                rearRight.SetCommand(fld);
+
+                frontRight.SetCommand(frd);
+                rearLeft.SetCommand(frd);
+            }
+            else {
+                float cX = linear.x * config.GetMaxCommand();
+                float cY = linear.y * config.GetMaxCommand();
+
+                frontLeft.SetCommand(-cX + cY);
+                frontRight.SetCommand(cX + cY);
+                rearLeft.SetCommand(-cX - cY);
+                rearRight.SetCommand(cX - cY);
             }
         }
     }

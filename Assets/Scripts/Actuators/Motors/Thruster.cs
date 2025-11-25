@@ -10,7 +10,7 @@ namespace Sim.Actuators.Motors {
         [SerializeField] private bool debug;
         private IPhysicsBody rootBody;
         private float thrustK, backK, height;
-        
+
         protected override void Awake() {
             base.Awake();
 
@@ -40,9 +40,9 @@ namespace Sim.Actuators.Motors {
             force *= submersionFraction;
             rootBody.AddForceAtPosition(force, body.transform.position);
 
-            if (debug) Debug.DrawLine(body.position, body.position + force, Color.red, Time.fixedDeltaTime);
+            if (debug) Debug.DrawLine(body.position, body.position - force * 0.01f, Color.red, Time.fixedDeltaTime);
         }
-        
+
         public float GetMaxThrust() => config.GetMaxThrust();
         public float GetMaxBackThrust() => config.GetMaxBackThrust();
     }
