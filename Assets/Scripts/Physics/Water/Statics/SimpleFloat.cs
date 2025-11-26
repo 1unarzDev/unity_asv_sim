@@ -57,8 +57,6 @@ namespace Sim.Physics.Misc {
         void LateUpdate() {
             if (targetSurface == null) return;
 
-            Vector3 finalPosition;
-
             // Sampling points around the boat
             if (useRotation) {
                 Vector3 localBow = transform.forward * (length / 2f);
@@ -87,25 +85,21 @@ namespace Sim.Physics.Misc {
                 Vector3 waterNormal = Vector3.Cross(forwardDir, rightDir).normalized;
                
                 float avgHeight = (hBow + hStern + hLeft + hRight) / 4f;
-                Vector3 targetWavePos = new(transform.position.x, avgHeight + verticalOffset, transform.position.z);
-               
-                smoothedPosition.y = Mathf.Lerp(smoothedPosition.y, targetWavePos.y, positionLerpSpeed * Time.deltaTime);
+                smoothedPosition.y = Mathf.Lerp(smoothedPosition.y, avgHeight + verticalOffset, positionLerpSpeed * Time.deltaTime);
                 smoothedRotation = Quaternion.Slerp(smoothedRotation, Quaternion.FromToRotation(transform.up, waterNormal) * transform.rotation, rotationLerpSpeed * Time.deltaTime);
-               
-                finalPosition = new(transform.position.x, smoothedPosition.y, transform.position.z);
             }
             else {
                 float height = GetWaterHeight(transform.position);
-                finalPosition = new(transform.position.x, height + verticalOffset, transform.position.z); 
+                smoothedPosition.y = Mathf.Lerp(smoothedPosition.y, height + verticalOffset, positionLerpSpeed * Time.deltaTime);
             }
     
             // Apply water current
             if (followWaterCurrent && !disableCurrentFlow) {
                 Vector3 currentDir = GetWaterCurrentDirection(transform.position);
-                finalPosition += currentDir * currentSpeedMultiplier * Time.deltaTime;
+                smoothedPosition += currentSpeedMultiplier * Time.deltaTime * currentDir;
             }
            
-            transform.position = finalPosition;
+            transform.position = smoothedPosition;
             transform.rotation = smoothedRotation;
         }
     

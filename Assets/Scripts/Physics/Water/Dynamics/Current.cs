@@ -37,10 +37,7 @@ namespace Sim.Physics.Water.Dynamics {
             Vector3 bodyOmega = body.angularVelocity;
             Vector3 bodyPos = body.position;
 
-            Vector3 total = Vector3.zero;
             for (int i = 0; i < submerged.data.maxTriangleIndex / 3; i++) {
-                if (!submerged.data.isSubmerged[i]) continue;
-
                 Vector3 faceCenter = submerged.data.faceCentersWorld[i];
                 Vector3 pointVel = bodyVel + Vector3.Cross(bodyOmega, faceCenter - bodyPos);
                 Vector3 waterVel = GetCurrentAtPoint(faceCenter);

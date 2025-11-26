@@ -30,7 +30,7 @@ namespace Sim.Physics.Processing {
         }
     }
 
-    /// Class holding the vertices, triangles and normals of the submerged mesh, and more.
+    // Class holding the vertices, triangles and normals of the submerged mesh, and more.
     public class Data {
         public Vector3[] vertices;
         public int[] triangles;
@@ -44,8 +44,6 @@ namespace Sim.Physics.Processing {
         public float volume;
         public int maxTriangleIndex;
 
-        public bool[] isSubmerged;
-
         public Data(int maxNumTriangles) {
             vertices = new Vector3[maxNumTriangles];
             triangles = new int[maxNumTriangles];
@@ -56,7 +54,6 @@ namespace Sim.Physics.Processing {
             centroid = new Vector3();
             volume = new float();
             maxTriangleIndex = 0;
-            isSubmerged = new bool[maxNumTriangles];
         }
     }
 
@@ -72,10 +69,16 @@ namespace Sim.Physics.Processing {
         private Vector3[] hullMeshVertices, hullMeshNormals;
         private int[] hullMeshTriangles;
 
+        private Vector3[] verticesLocal = new Vector3[3];
+        private Vector3[] verticesWorld = new Vector3[3];
+        private Vector3[] normalsLocal = new Vector3[3];
+        private float[] vertexHeights = new float[3];
+
+
         // Only submergedVolume uses these
 
         // Called from Submersion.cs
-        /// Populates global variables with the submerged mesh and its properties
+        // Populates global variables with the submerged mesh and its properties
         public Submerged(Mesh simplifiedHullMesh, bool debug = false) {
             hullMesh = simplifiedHullMesh;
             hullMeshVertices = simplifiedHullMesh.vertices;
@@ -101,15 +104,10 @@ namespace Sim.Physics.Processing {
 
 
         // Called in Update
-        /// Returns the arrays of vertices, triangles and normals of the submerged mesh.
-        /// It also splits the triangles depending on how many vertices are submerged.
+        // Returns the arrays of vertices, triangles and normals of the submerged mesh.
+        // It also splits the triangles depending on how many vertices are submerged.
         public void ProduceSubmergedTriangles
             (Data data, Patch patch, Vector3[] bodyVertices, int[] bodyTriangles, Vector3[] bodyVertNormals) {
-            Vector3[] verticesLocal = new Vector3[3];
-            Vector3[] verticesWorld = new Vector3[3];
-            Vector3[] normalsLocal = new Vector3[3];
-            float[] vertexHeights = new float[3];
-
             // Loop through input triangles
             for (int i = 0; i < bodyTriangles.Length - 2; i += 3) {
 
@@ -172,8 +170,6 @@ namespace Sim.Physics.Processing {
                             break;
                         }
                     case 3: {
-                            data.isSubmerged[data.maxTriangleIndex / 3] = true;
-
                             AppendTriangle(data, verticesLocal[0], verticesLocal[1], verticesLocal[2], triangleNormal);
                             break;
                         }
@@ -182,8 +178,8 @@ namespace Sim.Physics.Processing {
         }
 
 
-        /// Returns the areas of the triangles in the submerged mesh.
-        /// Takes in the vertices of the submerged mesh.
+        // Returns the areas of the triangles in the submerged mesh.
+        // Takes in the vertices of the submerged mesh.
         public float[] GetTriangleAreas(Data data) {
             Vector3[] vertices = data.vertices;
             float[] areas = data.triangleAreas;
@@ -195,8 +191,8 @@ namespace Sim.Physics.Processing {
         }
 
 
-        /// Called in GetSubmergedTriangles
-        /// Updates the vertices, triangles and normals of the submerged mesh.
+        // Called in GetSubmergedTriangles
+        // Updates the vertices, triangles and normals of the submerged mesh.
         public void AppendTriangle(Data data, Vector3 v1, Vector3 v2, Vector3 v3, Vector3 triNormal) {
             int currentIndex = data.maxTriangleIndex;
             data.triangles[currentIndex] = currentIndex;
@@ -211,8 +207,8 @@ namespace Sim.Physics.Processing {
         }
 
 
-        /// Calculates the difference of volume between the submerged part of hull and any eventual
-        /// water above it. Also calculates the center of volume of this submerged part of the hull.
+        // Calculates the difference of volume between the submerged part of hull and any eventual
+        // water above it. Also calculates the center of volume of this submerged part of the hull.
         public (float vol, Vector3 volCenter) GetSubmergedVolume(Data data, float[] heights) {
             Transform submersionTransform = data.transform;
             Vector3[] vertices = data.vertices;
@@ -268,8 +264,8 @@ namespace Sim.Physics.Processing {
         }
 
 
-        /// Queries the patch for the height of the center of each triangle in the submerged mesh.
-        /// Returns a float array of the heights.
+        // Queries the patch for the height of the center of each triangle in the submerged mesh.
+        // Returns a float array of the heights.
         public float[] GetTriangleCenterHeights(Data data, Patch patch) {
             Transform transform = data.transform;
             Vector3[] vertices = data.vertices;
@@ -284,7 +280,7 @@ namespace Sim.Physics.Processing {
         }
 
 
-        /// Calculates the center of each triangle in the submerged mesh.
+        // Calculates the center of each triangle in the submerged mesh.
         public Vector3[] GetFaceCenters(Data data) {
             Transform transform = data.transform;
             Vector3[] vertices = data.vertices;
@@ -299,7 +295,7 @@ namespace Sim.Physics.Processing {
         }
 
 
-        /// Calculates the resistance coefficient of the submerged hull.
+        // Calculates the resistance coefficient of the submerged hull.
         public float GetResistanceCoefficient(float speed, float hullZmin, float hullZmax, Data data) {
             float submergedArea = CalculateMeshArea(data);
             float Rn = CalculateReynoldsNumber(speed, Math.Abs(hullZmax - hullZmin));
@@ -344,10 +340,9 @@ namespace Sim.Physics.Processing {
             return f;
         }
 
-
-        /// Sorts the vertices of a triangle by their heights.
-        /// Indexed from 0 to 2, low to high.
-        /// Called in GetSubmergedTriangles.
+        // Sorts the vertices of a triangle by their heights.
+        // Indexed from 0 to 2, low to high.
+        // Called in GetSubmergedTriangles.
         private static (Vector3[], float[]) SortVerticesAgainstFloats(Vector3[] vertices, float[] heights) {
             if (heights[0] > heights[1]) {
                 Swap(ref heights[0], ref heights[1]);
@@ -374,13 +369,4 @@ namespace Sim.Physics.Processing {
             b = temp;
         }
     }
-
-    // Old variable names with new:
-    // LJ_H = intersectPointLowToHigh
-    // LJ_M = intersectPointLowToMid
-    // J_H = newEdgeLowToHigh
-    // J_M = newEdgeLowToMid
-
-    // LI_L = interpolatedLengthLowToHigh
-    // LI_M = interpolatedLengthMidToHigh
 }

@@ -17,6 +17,7 @@ namespace Sim.Utils {
             set => ab.TeleportRoot(ab.transform.position, value);
         }
         public Transform transform { get => ab.transform; }
+        public Vector3 centerOfMass { get => ab.centerOfMass; set => ab.centerOfMass = value; }
         public Vector3 linearVelocity { get => ab.linearVelocity; set => ab.linearVelocity = value; }
         public Vector3 angularVelocity { get => ab.angularVelocity; set => ab.angularVelocity = value; }
         public Vector3 inertiaTensor { get => ab.inertiaTensor; set => ab.inertiaTensor = value; }

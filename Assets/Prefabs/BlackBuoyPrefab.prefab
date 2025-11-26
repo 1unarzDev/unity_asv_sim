@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5937864241289850297}
   - component: {fileID: 3664886972044357819}
   m_Layer: 0
-  m_Name: RedBuoyPrefab
+  m_Name: BlackBuoyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 257
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77c33f9247568f9418dc61c26d7437d0, type: 2}
+  - {fileID: 2100000, guid: faf54c840f2936a68bd2eb15354859d6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

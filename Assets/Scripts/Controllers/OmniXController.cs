@@ -64,20 +64,20 @@ namespace Sim.Controllers {
                 float frd = angular.z * config.GetMaxCommand();
                 float fld = -frd;
 
-                frontLeft.SetCommand(fld);
-                rearRight.SetCommand(fld);
-
                 frontRight.SetCommand(frd);
                 rearLeft.SetCommand(frd);
+
+                frontLeft.SetCommand(fld);
+                rearRight.SetCommand(fld);
             }
             else {
                 float cX = linear.x * config.GetMaxCommand();
                 float cY = linear.y * config.GetMaxCommand();
 
-                frontLeft.SetCommand(-cX + cY);
-                frontRight.SetCommand(cX + cY);
-                rearLeft.SetCommand(-cX - cY);
-                rearRight.SetCommand(cX - cY);
+                frontLeft.SetCommand(cX - cY);
+                frontRight.SetCommand(-cX - cY);
+                rearLeft.SetCommand(cX + cY);
+                rearRight.SetCommand(-cX + cY);
             }
         }
     }

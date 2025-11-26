@@ -9,6 +9,7 @@ namespace Sim.Utils {
         }
 
         public Vector3 position { get => rb.position; set => rb.position = value; }
+        public Vector3 centerOfMass { get => rb.centerOfMass; set => rb.centerOfMass = value; }
         public Quaternion rotation { get => rb.rotation; set => rb.rotation = value; }
         public Transform transform { get => rb.transform; }
         public Vector3 linearVelocity { get => rb.linearVelocity; set => rb.linearVelocity = value; }
